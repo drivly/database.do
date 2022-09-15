@@ -61,6 +61,6 @@ export class Database {
       this.state.storage.put(id, data)
     }
     
-    return new Response(JSON.stringify({ api, resource, id, action, data, user }, null, 2), { headers: { 'content-type': 'application/json; charset=utf-8' }})
+    return new Response(JSON.stringify({ api, resource, id, action, links, data, user }, null, 2), { headers: { 'content-type': 'application/json; charset=utf-8' }})
   }
 }
