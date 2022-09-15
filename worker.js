@@ -37,17 +37,19 @@ export class Database {
     let data = id ? await this.state.storage.get(id) : await this.state.storage.list(query).then(list => Object.fromEntries(list))
     let links = id ? {
       self: req.url,
-      
+      set: `${origin}/${resource}/${id}?localTime=${user.localTime}`,
+      delete: `${origin}/${resource}/${id}/delete`
     } : {
       self: req.url,
-      start: '',
-      next: '',
-      prev: '',
-      last: '',
+      start: `${origin}/${resource}`,
+      next: `${origin}/${resource}?`,
+      prev: `${origin}/${resource}?`,
+      last: `${origin}/${resource}/${id}`,
     }
     if (action == 'set') {
       data = { 
         id,
+        url: `${origin}/${resource}/${id}`
         ...data,
         ...body,
         ...query,
