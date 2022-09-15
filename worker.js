@@ -49,7 +49,7 @@ export class Database {
     if (action == 'set') {
       data = { 
         id,
-        url: `${origin}/${resource}/${id}`
+        url: `${origin}/${resource}/${id}`,
         ...data,
         ...body,
         ...query,
