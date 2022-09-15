@@ -1,0 +1,22 @@
+name = "webhooks-do"
+account_id = "b6641681fe423910342b9ffa1364c76d"
+route = { pattern = "*/*", zone_id = "17b4181d56684df82311d478c6eb5f21" }
+main = "worker.js"
+compatibility_date = "2022-08-23"
+
+services = [
+  { binding = "CTX", service = "ctx-do", environment = "production" }
+]
+
+#[[kv_namespaces]]
+#  binding = "DBKV"
+#  id = ""
+#  preview_id = ""
+  
+  
+[durable_objects]
+bindings = [{name = "DATABASE", class_name = "Database"}]
+
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["Database"]
