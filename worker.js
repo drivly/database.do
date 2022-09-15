@@ -47,18 +47,19 @@ export class Database {
       last: `${origin}/${resource}/${id}`,
     }
     if (action == 'set') {
+      let { createdAt, createdBy, createdIn, updatedAt, updatedBy, updatedIn, ...currentData } = data
       data = { 
         id,
         url: `${origin}/${resource}/${id}`,
-        ...data,
+        ...currentData,
         ...body,
         ...query,
-        createdBy: data?.createdBy ?? user.email ?? user.ip,
-        createdAt: data?.createdAt ?? time,
-        createdWith: data?.createdWith ?? requestId,
-        updatedBy: user.email ?? user.ip,
+        createdAt: createdAt ?? time,
+        createdBy: createdBy ?? user.email ?? user.ip,
+        createdIn: createdIn ?? requestId,
         updatedAt: time,
-        updatedWith: requestId,
+        updatedBy: user.email ?? user.ip,
+        updatedIn: requestId,
       }
       this.state.storage.put(id, data)
     }
