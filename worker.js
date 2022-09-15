@@ -62,6 +62,8 @@ export class Database {
         updatedIn: requestId,
       }
       this.state.storage.put(id, data)
+    } else if (action == 'delete') {
+      await this.state.storage.delete(id)
     }
     
     return new Response(JSON.stringify({ api, resource, id, action, links, data, user }, null, 2), { headers: { 'content-type': 'application/json; charset=utf-8' }})
