@@ -37,7 +37,7 @@ export class Database {
     let data = id ? await this.state.storage.get(id) : await this.state.storage.list(query).then(list => Object.fromEntries(list))
     let links = id ? {
       self: `${origin}/${resource}/${id}`,
-      set: data?.localTime ? `${origin}/${resource}/${id}/set?inCity=${user.city}` : `${origin}/${resource}/${id}/set?localTime=${user.localTime}`,
+      set: data?.localTime || query?.localTime ? `${origin}/${resource}/${id}/set?inCity=${user.city}` : `${origin}/${resource}/${id}/set?localTime=${user.localTime}`,
       delete: `${origin}/${resource}/${id}/delete`
     } : {
       self: req.url,
@@ -64,6 +64,7 @@ export class Database {
       this.state.storage.put(id, data)
     } else if (action == 'delete') {
       await this.state.storage.delete(id)
+      data = { deleted: {...data}}
     }
     
     return new Response(JSON.stringify({ api, resource, id, action, links, data, user }, null, 2), { headers: { 'content-type': 'application/json; charset=utf-8' }})
