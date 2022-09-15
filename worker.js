@@ -36,8 +36,8 @@ export class Database {
     id = id == 'new' ? crypto.randomUUID() : id
     let data = id ? await this.state.storage.get(id) : await this.state.storage.list(query).then(list => Object.fromEntries(list))
     let links = id ? {
-      self: req.url,
-      set: data?.localTime ? `${origin}/${resource}/${id}?inCity=${user.city}` : `${origin}/${resource}/${id}?localTime=${user.localTime}`,
+      self: `${origin}/${resource}/${id}`,
+      set: data?.localTime ? `${origin}/${resource}/${id}/set?inCity=${user.city}` : `${origin}/${resource}/${id}/set?localTime=${user.localTime}`,
       delete: `${origin}/${resource}/${id}/delete`
     } : {
       self: req.url,
