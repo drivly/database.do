@@ -35,16 +35,26 @@ export class Database {
     action = action ? action : body ? 'set' : id == 'new' ? 'set' : 'get'
     id = id == 'new' ? crypto.randomUUID() : id
     let data = id ? await this.state.storage.get(id) : await this.state.storage.list(query).then(list => Object.fromEntries(list))
+    let links = id ? {
+      self: req.url,
+      
+    } : {
+      self: req.url,
+      start: '',
+      next: '',
+      prev: '',
+      last: '',
+    }
     if (action == 'set') {
       data = { 
         id,
         ...data,
         ...body,
         ...query,
-        createdBy: data.createdBy ?? user.email,
+        createdBy: data.createdBy ?? user.email ?? user.ip,
         createdAt: data.createdAt ?? time,
         createdWith: data.createdWith ?? requestId,
-        updatedBy: user.email,
+        updatedBy: user.email ?? user.ip,
         updatedAt: time,
         updatedWith: requestId,
       }
