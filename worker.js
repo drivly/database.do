@@ -11,6 +11,7 @@ export const api = {
     new: 'https://namespace.database.do/:resource/new?prop=value',
     get: 'https://namespace.database.do/:resource/:id',
     set: 'https://namespace.database.do/:resource/:id/set?prop=value',
+    import: 'https://namespace.database.do/:resource/:id/import/:url',
     delete: 'https://namespace.database.do/:resource/:id/delete',
   },
   site: 'https://database.do',
