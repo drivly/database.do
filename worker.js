@@ -56,7 +56,7 @@ export class Database {
         ...body,
         ...query,
         createdAt: createdAt ?? time,
-        createdBy: createdBy ?? user.email ?? user.ip,
+        createdBy: createdBy ?? user.profile?.email ?? user.ip,
         createdIn: createdIn ?? requestId,
         updatedAt: time,
         updatedBy: user.email ?? user.ip,
