@@ -48,19 +48,22 @@ export class Database {
       last: `${origin}/${resource}/${id}`,
     }
     if (action == 'set') {
-      let { createdAt, createdBy, createdIn, updatedAt, updatedBy, updatedIn, ...currentData } = data ?? {}
+      if (!user.authenticated) return Response.redirect(origin + 'login')
+      let { createdAt, createdBy, createdIn, updatedAt, updatedBy, updatedIn, ...currentData } = data._meta ?? {}
       data = { 
         id,
         url: `${origin}/${resource}/${id}`,
         ...currentData,
         ...body,
         ...query,
-        createdAt: createdAt ?? time,
-        createdBy: createdBy ?? user.profile?.email ?? user.ip,
-        createdIn: createdIn ?? requestId,
-        updatedAt: time,
-        updatedBy: user.email ?? user.ip,
-        updatedIn: requestId,
+        _meta: {
+          createdAt: createdAt ?? time,
+          createdBy: createdBy ?? user.profile?.email ?? user.ip,
+          createdIn: createdIn ?? requestId,
+          updatedAt: time,
+          updatedBy: user.email ?? user.ip,
+          updatedIn: requestId,
+        }
       }
       this.state.storage.put(id, data)
     } else if (action == 'delete') {
