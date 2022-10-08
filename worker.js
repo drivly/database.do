@@ -35,7 +35,7 @@ export class Database {
     let [ resource, id, action ] = pathSegments
     action = action ? action : body ? 'set' : id == 'new' ? 'set' : 'get'
     id = id == 'new' ? crypto.randomUUID() : id
-    let data = id ? await this.state.storage.get(id) : await this.state.storage.list(query).then(list => Object.fromEntries(list))
+    let { _meta, ...data } = id ? await this.state.storage.get(id) : await this.state.storage.list(query).then(list => Object.fromEntries(list))
     let links = id ? {
       self: `${origin}/${resource}/${id}`,
       set: data?.localTime || query?.localTime ? `${origin}/${resource}/${id}/set?inCity=${user.city}` : `${origin}/${resource}/${id}/set?localTime=${user.localTime}`,
@@ -71,6 +71,6 @@ export class Database {
       data = { deleted: {...data}}
     }
     
-    return new Response(JSON.stringify({ api, resource, id, action, links, data, user }, null, 2), { headers: { 'content-type': 'application/json; charset=utf-8' }})
+    return new Response(JSON.stringify({ api, resource, id, action, links, data, meta: _meta, user }, null, 2), { headers: { 'content-type': 'application/json; charset=utf-8' }})
   }
 }
