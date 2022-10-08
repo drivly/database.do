@@ -49,7 +49,7 @@ export class Database {
     }
     if (action == 'set') {
       if (!user.authenticated) return Response.redirect(origin + '/login')
-      let { createdAt, createdBy, createdIn, updatedAt, updatedBy, updatedIn, ...currentData } = data._meta ?? {}
+      let { createdAt, createdBy, createdIn, updatedAt, updatedBy, updatedIn, ...currentData } = data?._meta ?? {}
       data = { 
         id,
         url: `${origin}/${resource}/${id}`,
