@@ -61,7 +61,7 @@ export class Database {
           createdBy: createdBy ?? user.profile?.email ?? user.ip,
           createdIn: createdIn ?? requestId,
           updatedAt: time,
-          updatedBy: user.email ?? user.ip,
+          updatedBy: user.email ?? user.profile?.email ?? user.ip,
           updatedIn: requestId,
         }
       }
@@ -69,6 +69,11 @@ export class Database {
     } else if (action == 'delete') {
       await this.state.storage.delete(id)
       data = { deleted: {...data}}
+    }
+    
+    if (data._meta) {
+      _meta = data._meta
+      delete data._meta
     }
     
     return new Response(JSON.stringify({ api, resource, id, action, links, data, meta: _meta, user }, null, 2), { headers: { 'content-type': 'application/json; charset=utf-8' }})
